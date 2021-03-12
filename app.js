@@ -9,18 +9,13 @@ app.get('/', (req, res) => {
     var echostr = req.query.echostr;
     var nonce = req.query.nonce;
 
-    var oriArray = new Array();
-    oriArray[0] = nonce;
-    oriArray[1] = timestamp;
-    oriArray[2] = token;
-    oriArray.sort();
+    var oriArray = [token, timestamp, nonce].sort().join('')
 
-    var original = oriArray.join('');
-    var sha = sha1(original)
-
+    var sha = sha1(oriArray)
+     console.log(sha,signature)
     if (signature === sha) {
         //验证成功
-        res.send(echostr)
+        res.send(true)
     } else {
         //验证失败
         res.send({ "message": "error" })
